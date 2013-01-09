@@ -1,12 +1,8 @@
 require 'sinatra/base'
-require 'httparty'
 require 'mechanize'
 
 class SkyeProxy < Sinatra::Base
   class Github
-    include HTTParty
-    format :json
-
     def self.token(code)
       params = {
         :client_id      => ENV['CLIENT_ID'], 
