@@ -1,7 +1,11 @@
 require 'sinatra/base'
+require 'sinatra/cross_origin'
 require 'mechanize'
 
 class SkyeProxy < Sinatra::Base
+  register Sinatra::CrossOrigin
+  # enable cross_origin
+
   class Github
     def self.token(code)
       params = {
@@ -13,7 +17,6 @@ class SkyeProxy < Sinatra::Base
       headers = {"Accept" => 'application/json'}
 
       response = client.post('https://github.com/login/oauth/access_token', params, headers)
-
       response.body
     end
 
@@ -24,8 +27,8 @@ class SkyeProxy < Sinatra::Base
     end
   end
 
-
   post '/token' do
+    cross_origin
     content_type 'application/json'
     Github.token(params[:code])
   end
